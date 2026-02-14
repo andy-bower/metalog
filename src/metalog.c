@@ -853,6 +853,7 @@ static int getKernelDataSource(DataSource *source)
         char line[LINE_MAX];
         int s;
 
+        close(fdpipe[0]);
         signal(SIGUSR1, SIG_IGN);
         signal(SIGUSR2, SIG_IGN);
         setpgid((pid_t) 0, pgid);
@@ -889,6 +890,7 @@ static int getKernelDataSource(DataSource *source)
 
         return 0;
     }
+    close(fdpipe[1]);
     source->fd = fdpipe[0];
 #else                                  /* !HAVE_KLOGCTL */
     {
